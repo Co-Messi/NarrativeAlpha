@@ -25,7 +25,7 @@ Current tools track price/volume. Nobody tracks narrative formation in real-time
 | Date | Feature | Status |
 |------|---------|--------|
 | 2026-03-02 | Project structure, config system, Twitter ingestion | ✅ Complete |
-| 2026-03-03 | Reddit ingestion, data pipeline | ✅ Complete |
+| 2026-03-03 | Reddit ingestion, unified data pipeline | ✅ Complete |
 | 2026-03-04 | News API ingestion, unified data models | 🔄 Next |
 
 ## Quick Start
