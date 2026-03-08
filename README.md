@@ -30,7 +30,8 @@ Current tools track price/volume. Nobody tracks narrative formation in real-time
 | 2026-03-05 | Podcast transcription ingestion | ✅ Complete |
 | 2026-03-06 | LLM-ready narrative clustering engine | ✅ Complete |
 | 2026-03-07 | Sentiment analysis module | ✅ Complete |
-| 2026-03-08 | Velocity/saturation scoring | 🔄 Next |
+| 2026-03-08 | Velocity/saturation scoring | ✅ Complete |
+| 2026-03-09 | Narrative persistence and tracking | 🔄 Next |
 
 ## Quick Start
 
@@ -91,6 +92,7 @@ NarrativeAlpha/
 - [x] **Podcast Transcript Ingestion** — RSS feed ingestion with transcript extraction + keyword filtering
 - [x] **Narrative Clustering Engine** — Rule-based clustering with optional LLM labeling interface
 - [x] **Sentiment Analysis Module** — Finance-aware sentiment scoring for posts and narratives
+- [x] **Scoring Engine** — Engagement velocity and market saturation (mindshare) metrics
 - [x] **Unified Data Models** — Twitter, Reddit, News, and Podcast data normalized to SocialPost
 - [x] **Unified Storage** — SQLite storage with deduplication across platforms
 - [x] **Ingestion Pipeline** — Orchestrator for multi-platform data collection
