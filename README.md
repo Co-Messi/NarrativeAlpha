@@ -32,7 +32,7 @@ Current tools track price/volume. Nobody tracks narrative formation in real-time
 | 2026-03-07 | Sentiment analysis module | ✅ Complete |
 | 2026-03-08 | Velocity/saturation scoring | ✅ Complete |
 | 2026-03-09 | Narrative persistence and tracking | ✅ Complete |
-| 2026-03-10 | Trend prediction algorithms | 🔄 Next |
+| 2026-03-10 | Trend prediction algorithms | ✅ Complete |
 
 ## Quick Start
 
@@ -66,6 +66,9 @@ python scripts/analyze_sentiment.py --limit 200 --min-cluster-size 2
 
 # Track narrative persistence and lifecycle
 python scripts/track_narratives.py --limit 200 --min-cluster-size 2 --stale-after-hours 48
+
+# Predict future trends for active narratives
+python scripts/predict_trends.py --horizon 24
 ```
 
 ## Architecture
@@ -103,10 +106,7 @@ NarrativeAlpha/
 - [x] **Ingestion Pipeline** — Orchestrator for multi-platform data collection
 - [x] **CLI Tools** — Scripts for Twitter, Reddit, News, and Podcast ingestion
 - [x] **Test Suite** — Unit tests for ingestion and models
-
-### 🔄 Phase 1: Remaining
-
-- [ ] Trend prediction algorithms
+- [x] **Trend Prediction** — Linear regression for narrative score forecasting
 
 ### 📋 Phase 2: Intelligence
 

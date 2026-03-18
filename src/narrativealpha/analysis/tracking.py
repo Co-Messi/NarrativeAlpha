@@ -68,10 +68,26 @@ class NarrativeTracker:
                 """
             )
             conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS narrative_history (
+                    history_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    narrative_id TEXT NOT NULL,
+                    version INTEGER NOT NULL,
+                    sentiment_score REAL NOT NULL,
+                    velocity_score REAL NOT NULL,
+                    saturation_score REAL NOT NULL,
+                    overall_score REAL NOT NULL,
+                    confidence REAL NOT NULL,
+                    updated_at TEXT NOT NULL,
+                    FOREIGN KEY(narrative_id) REFERENCES narratives(id)
+                )
+                """
+            )
+            conn.execute(
                 "CREATE INDEX IF NOT EXISTS idx_narratives_active ON narratives(is_active)"
             )
             conn.execute(
-                "CREATE INDEX IF NOT EXISTS idx_narratives_last_seen ON narratives(last_seen)"
+                "CREATE INDEX IF NOT EXISTS idx_narrative_history_narrative ON narrative_history(narrative_id)"
             )
             conn.execute(
                 "CREATE INDEX IF NOT EXISTS idx_narrative_events_narrative ON narrative_events(narrative_id)"
@@ -127,6 +143,7 @@ class NarrativeTracker:
                         occurred_at=now_iso,
                         details={"name": narrative.name},
                     )
+                    self._insert_history(conn, narrative, version=1, updated_at=now_iso)
                     events.append(
                         NarrativeTrackEvent(
                             narrative_id=narrative.id,
@@ -188,6 +205,7 @@ class NarrativeTracker:
                         occurred_at=now_iso,
                         details={"name": narrative.name},
                     )
+                    self._insert_history(conn, narrative, version=new_version, updated_at=now_iso)
 
                 events.append(
                     NarrativeTrackEvent(
@@ -248,6 +266,16 @@ class NarrativeTracker:
             ).fetchall()
             return [self._row_to_narrative(row) for row in rows]
 
+    def get_history(self, narrative_id: str) -> list[dict]:
+        """Return historical score snapshots for a narrative."""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            rows = conn.execute(
+                "SELECT * FROM narrative_history WHERE narrative_id = ? ORDER BY version ASC",
+                (narrative_id,),
+            ).fetchall()
+            return [dict(row) for row in rows]
+
     def _to_db_tuple(self, narrative: Narrative, version: int, updated_at: str) -> tuple:
         return (
             narrative.id,
@@ -290,6 +318,32 @@ class NarrativeTracker:
             if abs(float(row[field]) - float(getattr(narrative, field))) > 1e-6:
                 return True
         return False
+
+    def _insert_history(
+        self,
+        conn: sqlite3.Connection,
+        narrative: Narrative,
+        version: int,
+        updated_at: str,
+    ) -> None:
+        conn.execute(
+            """
+            INSERT INTO narrative_history (
+                narrative_id, version, sentiment_score, velocity_score,
+                saturation_score, overall_score, confidence, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                narrative.id,
+                version,
+                narrative.sentiment_score,
+                narrative.velocity_score,
+                narrative.saturation_score,
+                narrative.overall_score,
+                narrative.confidence,
+                updated_at,
+            ),
+        )
 
     def _insert_event(
         self,
