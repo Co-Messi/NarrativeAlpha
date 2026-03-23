@@ -33,6 +33,7 @@ Current tools track price/volume. Nobody tracks narrative formation in real-time
 | 2026-03-08 | Velocity/saturation scoring | ✅ Complete |
 | 2026-03-09 | Narrative persistence and tracking | ✅ Complete |
 | 2026-03-10 | Trend prediction algorithms | ✅ Complete |
+| 2026-03-23 | Report generation system | ✅ Complete |
 
 ## Quick Start
 
@@ -69,6 +70,10 @@ python scripts/track_narratives.py --limit 200 --min-cluster-size 2 --stale-afte
 
 # Predict future trends for active narratives
 python scripts/predict_trends.py --horizon 24
+
+# Generate narrative intelligence report
+python scripts/generate_report.py --daily
+python scripts/generate_report.py --weekly --format json --output reports/weekly.json
 ```
 
 ## Architecture
@@ -110,7 +115,7 @@ NarrativeAlpha/
 
 ### 📋 Phase 2: Intelligence
 
-- [ ] Report generation system
+- [x] **Report generation system** — CLI tool and Python API for narrative reports
 - [ ] API server
 - [ ] Frontend dashboard
 
